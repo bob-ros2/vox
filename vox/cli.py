@@ -1,3 +1,4 @@
+import pyaudio
 import argparse
 import importlib
 import logging
@@ -29,7 +30,7 @@ def main():
     parser.add_argument('-s', '--silence-threshold', type=int, default=15,
         help='RMS threshold below which an audio chunk is considered silent (default: 15).')
 
-    parser.add_argument('-l', '--lang', type=str, default=None,
+    parser.add_argument('-g', '--lang', type=str, default=None,
         help='Language to transcribe in (e.g., "en", "de", "fr" ...). Default is auto-detection.')
 
     parser.add_argument('-p', '--pre-buffer', type=int, default=5,
@@ -53,7 +54,30 @@ def main():
     parser.add_argument('--custom-handler', type=str, default=None,
         help='Path to a Python script file containing a custom OutputHandler class.')
 
+    parser.add_argument('-l', '--list-devices', action='store_true',
+        help='List available audio input devices and exit.')
+
     args, handler_args = parser.parse_known_args()
+
+    # --- List Devices and Exit ---
+    if args.list_devices:
+        p = pyaudio.PyAudio()
+        print("\nAvailable audio input devices:")
+        print("------------------------------")
+        for i in range(p.get_device_count()):
+            device_info = p.get_device_info_by_index(i)
+            if device_info.get('maxInputChannels') > 0:
+                host_api_info = p.get_host_api_info_by_index(device_info['hostApi'])
+                api_name = host_api_info['name']
+                
+                print(f"  Index {device_info['index']}: {device_info['name']}")
+                print(f"    - Host API: {api_name}")
+                print(f"    - Max Input Channels: {int(device_info['maxInputChannels'])}")
+                print(f"    - Default Sample Rate: {int(device_info['defaultSampleRate'])} Hz\n")
+
+        print("------------------------------\n")
+        p.terminate()
+        exit(0)
 
     # --- Load the Output Handlers ---
     output_handlers = []
