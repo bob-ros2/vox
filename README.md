@@ -1,7 +1,5 @@
 # Vox: Real-time Whisper Transcription Tool & Library
 
-[![License: Apache 2.0](https://img.shields.io/badge/license-Apache%20License%202.0-blue)](https://opensource.org/license/apache-2-0)
-
 Vox is a powerful, real-time audio transcription tool and Python library that uses OpenAI's Whisper model. It continuously listens to a microphone, detects speech, transcribes it upon pauses, and forwards the resulting text to one or more configurable destinations using a highly extensible, pluggable output system.
 
 The project is designed to be used in two primary ways:
@@ -18,6 +16,37 @@ The project is designed to be used in two primary ways:
 -   **Highly Configurable**: Adjust silence thresholds, language, Whisper model size, and more via command-line arguments.
 -   **Dockerized**: Comes with a `Dockerfile` and `docker-compose.yaml` for easy, cross-platform deployment.
 -   **GPU Acceleration**: Natively supports NVIDIA GPU acceleration via Docker for significantly faster transcription.
+
+---
+
+## Installation
+
+There are three ways to install Vox for local use, depending on your needs. For all methods, please first review the **Dependencies and Manual Installation** section below.
+
+### Method 1: From PyPI (Recommended for Users)
+
+This is the easiest and most standard way to get the latest stable version. It will automatically make the `vox` command available in your terminal.
+
+```bash
+pip install vox-scribe
+```
+
+### Method 2: From GitHub (Latest Development Version)
+
+If you want the absolute latest features or fixes that haven't been published to PyPI yet, you can install directly from the GitHub repository.
+
+```bash
+pip install git+https://github.com/bob-ros2/vox
+```
+
+### Method 3: From Source (For Developers)
+
+If you have cloned the repository and want to modify the code, install it in "editable" mode. This links the `vox` command to your source files, so your changes are reflected immediately.
+
+```bash
+# From the root of the cloned repository
+pip install -e .
+```
 
 ---
 
@@ -60,10 +89,8 @@ This is the recommended method for end-users who want a running transcription se
 You can import the `Transcriber` class to integrate real-time transcription into your own Python projects.
 
 ### Installation
-```bash
-pip install git+https://github.com/bob-ros2/vox
-```
-See the "Dependencies and Manual Installation" section below for important details on non-Docker installations.
+
+Please follow one of the methods described in the **Installation** section above to install the library.
 
 ### Example Usage
 
@@ -115,13 +142,6 @@ While **Docker is the recommended, hassle-free method**, you can install Vox loc
 -   **PortAudio**: `PyAudio` is a Python wrapper for the PortAudio library. You must install PortAudio on your system before `pip install pyaudio` will succeed.
     -   On Debian/Ubuntu: `sudo apt-get install portaudio19-dev`
     -   On macOS (with Homebrew): `brew install portaudio`
-
-### A Warning on `torch` and `numpy`
-These libraries rely on complex, compiled code. **Installation via `pip` can be a source of frustration**, especially when targeting GPU acceleration with `torch`. If you encounter build errors or performance issues, we strongly advise following the official installation guides:
--   **PyTorch (`torch`)**: [Official PyTorch Website](https://pytorch.org/get-started/locally/) - Use their command generator to get the correct version for your system and CUDA version.
--   **NumPy**: Usually installs smoothly, but if not, ensure you have the necessary system build tools (like `gcc` and `python-dev` packages).
-
-Using the provided `Dockerfile` is the best way to avoid these issues entirely.
 
 ---
 
@@ -209,7 +229,7 @@ This is the most powerful feature for custom integrations.
         command: ["python", "-m", "vox.cli",
                   "--output-handlers", "stdout",
                   "--custom-handler", "/app/my_db_logger.py"
-        ]
+        
     ```
 
 ---
@@ -226,6 +246,6 @@ This is the most powerful feature for custom integrations.
 | `--model-dir`               | `None`     | Directory to store/load Whisper models.                                             |
 | `-p`, `--pre-buffer`        | `5`        | Chunks to keep before speech starts to avoid clipped words.                         |
 | `-w`, `--warmup`            | `2`        | Consecutive loud chunks to start recording.                                         |
-| `-r`, `--rms`               | `False`    | Show real-time audio volume (RMS).                                                  |
+-r`, `--rms`               | `False`    | Show real-time audio volume (RMS).                                                  |
 | `--output-handlers`         | `['stdout'` | A space-separated list of built-in handlers to use.                               |
 | `--custom-handler`          | `None`     | Path to a Python script with a custom `OutputHandler`.                              |
