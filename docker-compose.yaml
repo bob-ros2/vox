@@ -5,14 +5,12 @@ services:
       args:
         UID: ${UID}
         GID: ${GID}
-    
+
     volumes:
       #- /run/user/1000/pulse/native:/run/pulse/native
       - ${XDG_RUNTIME_DIR}/pulse/native:/run/pulse/native
       - /etc/machine-id:/etc/machine-id:ro
-      # Comment and remove from command line if you do not want to be bothered
       - ./models:/models
-      #- ./vox:/vox
 
     #command: ["bash", "-c", "while true; do sleep 10; done"]
     command: ["python", "-m", "vox.cli", "--model-dir", "/models"]
