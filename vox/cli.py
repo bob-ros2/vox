@@ -7,9 +7,9 @@ def main():
     logging.basicConfig(
         level=logging.INFO, 
         format='%(asctime)s %(levelname)s %(message)s')
-    
-    # All your argparse code goes here, exactly as before
-    parser = argparse.ArgumentParser(description='Real-time audio transcription program.')
+
+    parser = argparse.ArgumentParser(
+        description='Real-time audio transcription using Whisper. https://github.com/bob-ros2/vox')
 
     parser.add_argument('-t', '--threshold', type=int, default=1000, 
         help='Time in milliseconds a pause must last to end the recording (default: 1000).')
@@ -105,7 +105,7 @@ def main():
         for handler in output_handlers:
             handler.send(text)
 
-    # --- Use your library ---
+    # --- Use library ---
     try:
         # Convert argparse namespace to a dictionary for the library
         config = vars(args)
