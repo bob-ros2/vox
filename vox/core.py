@@ -107,7 +107,7 @@ class Transcriber:
 
                 else:
                     # Wait until speech begins
-                    if rms > self.config.get('silence_threshold', 100) * 2: 
+                    if rms > self.config.get('silence_threshold', 15) * 2: 
                         warmup_counter += 1
                     else:
                         warmup_counter = 0 # Reset if there is a dip in volume
