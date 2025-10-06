@@ -1,0 +1,28 @@
+services:
+  listener:
+    build:
+      context: .
+      args:
+        UID: ${UID}
+        GID: ${GID}
+    
+    volumes:
+      #- /run/user/1000/pulse/native:/run/pulse/native
+      - ${XDG_RUNTIME_DIR}/pulse/native:/run/pulse/native
+      - /etc/machine-id:/etc/machine-id:ro
+      - ./vox.py:/app/vox.py
+      # Comment and remove from command line if you do not want to be bothered
+      - ./models:/models
+      - ./vox:/vox
+
+    command: ["python", "-m", "vox.cli"]
+    #command: ["bash", "-c", "while true; do sleep 10; done"]
+    
+    # Comment if there is no docker toolkit installed
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
