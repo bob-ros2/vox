@@ -113,7 +113,7 @@ def main():
         # Instantiate and run the transcriber
         transcriber = Transcriber(
             config=config, 
-            on_transcription_callback=forward_to_handlers)
+            on_transcription_cb=forward_to_handlers)
         transcriber.run()
         
     except KeyboardInterrupt:

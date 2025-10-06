@@ -114,7 +114,7 @@ my_config = {
 
 try:
     # Instantiate the transcriber with your config and callback
-    transcriber = Transcriber(config=my_config, on_transcription_callback=handle_transcription)
+    transcriber = Transcriber(config=my_config, on_transcription_cb=handle_transcription)
     
     # Run the transcription loop (this is a blocking call)
     transcriber.run()

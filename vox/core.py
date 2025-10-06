@@ -6,12 +6,12 @@ from collections import deque
 
 class Transcriber:
 
-    def __init__(self, config, on_transcription_callback):
+    def __init__(self, config, on_transcription_cb):
         """
         Initializes the Transcriber.
 
         Args:
-            on_transcription_callback (callable): A function to call with the transcribed text.
+            on_transcription_cb (callable): A function to call with the transcribed text.
             config (dict): A dictionary containing configuration parameters. Expected keys are:
                 - model (str): Name of the Whisper model (e.g., 'base', 'small', 'medium').
                 - model_dir (str, optional): Directory to store/load Whisper models from.
@@ -27,7 +27,7 @@ class Transcriber:
                 - rms (bool): If True, prints real-time audio volume.
         """
         self.config = config
-        self.on_transcription = on_transcription_callback
+        self.on_transcription = on_transcription_cb
 
         MODEL = self.config.get('model', 'base')
         logging.info(f"Loading Whisper model: {MODEL}...")
