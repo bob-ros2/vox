@@ -44,9 +44,15 @@ ENV PATH="/opt/venv/bin:$PATH"
 RUN python -m pip install --upgrade pip && \
     pip install numpy pyaudio openai-whisper torch
 
-# Copy what we need
-COPY vox vox
+# Install the project and its dependencies from pyproject.toml
+COPY pyproject.toml .
+COPY ./vox ./vox
+RUN pip install .
 
 # Configure PulseAudio to use host's socket
 ENV PULSE_SERVER=unix:/run/pulse/native
 VOLUME /run/pulse/native
+VOLUME /models
+
+# Set the default command to run when the container starts
+CMD ["vox", "--model", "base", "--lang", "en", "--model-dir", "/models"]
