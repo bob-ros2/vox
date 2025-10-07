@@ -62,20 +62,18 @@ def main():
     # --- List Devices and Exit ---
     if args.list_devices:
         p = pyaudio.PyAudio()
-        print("\nAvailable audio input devices:")
-        print("------------------------------")
+        print("\nAvailable audio input devices")
+        print("-----------------------------")
         for i in range(p.get_device_count()):
             device_info = p.get_device_info_by_index(i)
             if device_info.get('maxInputChannels') > 0:
                 host_api_info = p.get_host_api_info_by_index(device_info['hostApi'])
                 api_name = host_api_info['name']
-                
                 print(f"  Index {device_info['index']}: {device_info['name']}")
                 print(f"    - Host API: {api_name}")
                 print(f"    - Max Input Channels: {int(device_info['maxInputChannels'])}")
                 print(f"    - Default Sample Rate: {int(device_info['defaultSampleRate'])} Hz\n")
 
-        print("------------------------------\n")
         p.terminate()
         exit(0)
 

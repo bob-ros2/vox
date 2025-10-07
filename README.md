@@ -130,18 +130,19 @@ finally:
 
 ## Dependencies and Manual Installation
 
-While **Docker is the recommended, hassle-free method**, you can install Vox locally. This requires manually installing its dependencies.
+While **Docker is the recommended, hassle-free method**, you can install Vox locally. This requires some system-level setup.
 
-### Core Dependencies
--   `openai-whisper`: The core transcription engine.
--   `pyaudio`: For accessing the microphone audio stream.
--   `numpy`: A dependency for audio data manipulation.
--   `torch`: The deep learning framework required by Whisper.
+1.  **Install PortAudio**: `pyaudio` requires the PortAudio C library.
+    -   **Debian/Ubuntu**: `sudo apt-get install portaudio19-dev`
+    -   **macOS (Homebrew)**: `brew install portaudio`
 
-### System-Level Dependencies
--   **PortAudio**: `PyAudio` is a Python wrapper for the PortAudio library. You must install PortAudio on your system before `pip install pyaudio` will succeed.
-    -   On Debian/Ubuntu: `sudo apt-get install portaudio19-dev`
-    -   On macOS (with Homebrew): `brew install portaudio`
+2.  **Install Python Dependencies**: It is highly recommended to use a virtual environment.
+    ```bash
+    pip install vox-scribe
+    ```
+
+**Note on `torch`**: Whisper depends on PyTorch (`torch`), which can be complex to install, especially for GPU support. If you encounter issues, we strongly recommend following the official instructions at [pytorch.org](https://pytorch.org/get-started/locally/) or using the provided Docker setup.
+
 
 ---
 
@@ -237,15 +238,18 @@ This is the most powerful feature for custom integrations.
 
 | Argument                    | Default    | Description                                                                         |
 | --------------------------- | ---------- | ----------------------------------------------------------------------------------- |
-| `-m`, `--model`             | `base`     | Whisper model (`tiny`, `base`, `small`, `medium`, `large`).                           |
-| `-l`, `--lang`              | `None`     | Language code (`en`, `de`). `None` for auto-detection.                              |
+| `-m`, `--model`             | `base`     | Whisper model to use (`tiny`, `base`, `small`, `medium`, `large`).                           |
+| `-g`, `--lang`              | `None`     | Language code (`en`, `de`). `None` for auto-detection.                              |
 | `-t`, `--threshold`         | `1000`     | Pause duration in ms to trigger transcription.                                      |
-| `-s`, `--silence-threshold` | `100`      | RMS audio level below which is considered silence.                                  |
+| `-s`, `--silence-threshold` | `15`       | RMS audio level below which is considered silence.                                  |
 | `-d`, `--device`            | `None`     | Index of the audio input device.                                                    |
 | `-c`, `--chunk-size`        | `1024`     | Samples per audio chunk. Lower is more responsive.                                  |
 | `--model-dir`               | `None`     | Directory to store/load Whisper models.                                             |
 | `-p`, `--pre-buffer`        | `5`        | Chunks to keep before speech starts to avoid clipped words.                         |
 | `-w`, `--warmup`            | `2`        | Consecutive loud chunks to start recording.                                         |
--r`, `--rms`               | `False`    | Show real-time audio volume (RMS).                                                  |
-| `--output-handlers`         | `['stdout'` | A space-separated list of built-in handlers to use.                               |
+| `-r`, `--rms`               | `False`    | Show real-time audio volume (RMS).                                                  |
+| `--channels`                | `1`        | Number of audio channels.                                                           |
+| `--rate`                    | `16000`    | Audio sample rate in Hz.                                                            |
+| `--output-handlers`         | `['stdout']`| A space-separated list of built-in handlers to use.                               |
 | `--custom-handler`          | `None`     | Path to a Python script with a custom `OutputHandler`.                              |
+| `-l`, `--list-devices`      | `False`    | List available audio input devices and exit.                                        |
