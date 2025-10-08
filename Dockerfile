@@ -1,14 +1,11 @@
 # Use Ubuntu 22.04 as the base image
 FROM ubuntu:22.04
 
-# Avoid interactive prompts
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Arguments for User and Group IDs, with a default of 1000
 ARG UID=1000
 ARG GID=1000
 
-# Install system dependencies
 RUN apt-get update && apt-get install -y \
     python3.10 \
     python3-pip \
@@ -25,7 +22,7 @@ RUN groupadd -g $GID appgroup && \
     useradd -u $UID -g $GID -m -s /bin/bash appuser && \
     usermod -a -G audio appuser
 
-# prepare venv
+# Prepare venv
 RUN mkdir /opt/venv && \
     chown -R appuser:appgroup /opt/venv
 
