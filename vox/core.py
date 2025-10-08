@@ -3,6 +3,7 @@ import numpy as np
 import whisper
 import logging
 from collections import deque
+from pynput import keyboard
 
 class Transcriber:
 
@@ -44,7 +45,19 @@ class Transcriber:
             frames_per_buffer=self.config.get('chunk_size', 1024),
             input_device_index=self.config.get('device', None)
         )
+
+        self.listener = keyboard.Listener(on_press=self._on_press)
+        self.listener.start()
+
         logging.info("Ready. Start speaking to begin transcription...")
+        logging.info("Press SPACE to toggle recording on/off.")
+
+    def _on_press(self, key):
+        if key == keyboard.Key.space:
+            self.recording_enabled = not self.recording_enabled
+            status = "ON" if self.recording_enabled else "OFF"
+            # Use print to ensure it appears on a new line, especially if RMS is being printed
+            print(f"\r--- Recording toggled {status} ---")
 
     def run(self):
         """Starts the main transcription loop."""
@@ -64,10 +77,22 @@ class Transcriber:
         while True:
             try:
                 data = self.stream.read(CHUNK)
+
+                if not self.recording_enabled:
+                    if recording:
+                        # Reset state if recording was in progress
+                        recording = False
+                        audio_buffer = []
+                        silence_counter = 0
+                        warmup_counter = 0
+                        logging.info("Recording paused. Waiting for new speech...")
+                    pre_buffer.clear() # Also clear pre_buffer to avoid old audio
+                    continue
+
                 audio_chunk = np.frombuffer(data, dtype=np.int16)
                 rms = np.sqrt(np.mean(np.square(audio_chunk)))
                 # Print the value (overwrite the same line)
-                self.config.get('rms', False) and print(f"\rRMS: {rms:6.2f} ", end="", flush=True)
+                self.config.get('rms', False) and print(f"\rRMS: {rms:5.2f} ", end="", flush=True)
 
                 # Check if a recording is currently active
                 if recording:
