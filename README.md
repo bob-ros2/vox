@@ -11,7 +11,7 @@ The project is designed to be used in two primary ways:
 -   **Real-time Transcription**: Listens to an audio input and transcribes speech in near real-time.
 -   **Dual Use**: Functions as both a ready-to-run CLI tool and an importable Python library.
 -   **Voice Activity Detection**: Intelligently waits for pauses in speech before transcribing, improving accuracy and reducing unnecessary processing.
--   **Pluggable Output System**: Send transcribed text to the console, files, HTTP webhooks, ROS2 topics, and more—simultaneously.
+-   **Pluggable Output System**: Send transcribed text to the console, files, HTTP webhooks, ROS2 topics, and more simultaneously.
 -   **Fully Extensible**: Load your own custom output handlers from a local script file without modifying the core code.
 -   **Highly Configurable**: Adjust silence thresholds, language, Whisper model size, and more via command-line arguments.
 -   **Dockerized**: Comes with a `Dockerfile` and `docker-compose.yaml` for easy, cross-platform deployment.
