@@ -6,7 +6,7 @@ authors = [
 ]
 license = "Apache-2.0"
 description = "A real-time audio transcription tool/lib using Whisper."
-readme = "readme_pip.md"
+readme = "readme_pypi.md"
 requires-python = ">=3.8"
 dependencies = [
     "numpy",
