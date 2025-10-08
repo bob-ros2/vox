@@ -62,7 +62,35 @@ This is the recommended method for end-users who want a running transcription se
 -   (Recommended) An NVIDIA GPU with the [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html).
 -   Linux (recommended, for easy PulseAudio integration).
 
-#### Setup Steps
+#### Option 1: Use the Pre-built Image from GHCR (Recommended for Users)
+
+This is the fastest way to get started. It pulls the ready-to-use Docker image directly from the GitHub Container Registry, skipping the local build process.
+
+1.  **Create a Local Directory for Models**
+    Whisper models will be downloaded and cached here to persist between container runs.
+    ```bash
+    mkdir -p ./models
+    ```
+
+2.  **Pull and Run the Image**
+    Copy and paste the command below into your terminal. It replicates the setup from `docker-compose.yaml`, including audio and optional GPU support.
+
+    ```bash
+    docker run -it --rm \
+      --gpus all \
+      -v "${XDG_RUNTIME_DIR}/pulse/native:/run/pulse/native" \
+      -v "/etc/machine-id:/etc/machine-id:ro" \
+      -v "./models:/models" \
+      ghcr.io/bob-ros2/vox/vox-scribe:latest \
+      --model-dir /models --model base --lang en --rms
+    ```
+    -   `--gpus all`: **(Optional)** Provides NVIDIA GPU acceleration. Remove this flag if you don't have an NVIDIA GPU or the NVIDIA Container Toolkit.
+    -   The `-v` flags are essential for mounting your system's audio socket and the local `models` directory into the container.
+    -   You can customize the transcription arguments (like `--model`, `--lang`, etc.) at the end of the command.
+
+#### Option 2: Build from Source (For Developers)
+This method builds the Docker image locally. It's best if you plan to modify the code.
+
 1.  **Clone the Repository**
     ```bash
     git clone https://github.com/bob-ros2/vox
