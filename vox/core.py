@@ -3,7 +3,8 @@ import numpy as np
 import whisper
 import logging
 from collections import deque
-from pynput import keyboard
+import threading
+import sys
 
 class Transcriber:
 
@@ -29,6 +30,7 @@ class Transcriber:
         """
         self.config = config
         self.on_transcription = on_transcription_cb
+        self.recording_enabled = True
 
         MODEL = self.config.get('model', 'base')
         logging.info(f"Loading Whisper model: {MODEL}...")
@@ -46,17 +48,19 @@ class Transcriber:
             input_device_index=self.config.get('device', None)
         )
 
-        self.listener = keyboard.Listener(on_press=self._on_press)
-        self.listener.start()
+        # Start a separate thread to listen for the toggle command
+        self.toggle_thread = threading.Thread(target=self._listen_for_toggle)
+        self.toggle_thread.daemon = True
+        self.toggle_thread.start()
 
         logging.info("Ready. Start speaking to begin transcription...")
-        logging.info("Press SPACE to toggle recording on/off.")
+        logging.info("Press ENTER to toggle recording on/off.")
 
-    def _on_press(self, key):
-        if key == keyboard.Key.space:
+    def _listen_for_toggle(self):
+        """Listens for ENTER in stdin to toggle recording."""
+        for line in sys.stdin:
             self.recording_enabled = not self.recording_enabled
             status = "ON" if self.recording_enabled else "OFF"
-            # Use print to ensure it appears on a new line, especially if RMS is being printed
             print(f"\r--- Recording toggled {status} ---")
 
     def run(self):

@@ -235,7 +235,6 @@ This is the most powerful feature for custom integrations.
 
 ---
 ## CLI Arguments Reference Table
-
 | Argument                    | Default    | Description                                                                         |
 | --------------------------- | ---------- | ----------------------------------------------------------------------------------- |
 | `-m`, `--model`             | `base`     | Whisper model to use (`tiny`, `base`, `small`, `medium`, `large`).                           |
@@ -246,10 +245,27 @@ This is the most powerful feature for custom integrations.
 | `-c`, `--chunk-size`        | `1024`     | Samples per audio chunk. Lower is more responsive.                                  |
 | `--model-dir`               | `None`     | Directory to store/load Whisper models.                                             |
 | `-p`, `--pre-buffer`        | `5`        | Chunks to keep before speech starts to avoid clipped words.                         |
-| `-w`, `--warmup`            | `2`        | Consecutive loud chunks to start recording.                                         |
+-w`, `--warmup`            | `2`        | Consecutive loud chunks to start recording.                                         |
 | `-r`, `--rms`               | `False`    | Show real-time audio volume (RMS).                                                  |
 | `--channels`                | `1`        | Number of audio channels.                                                           |
 | `--rate`                    | `16000`    | Audio sample rate in Hz.                                                            |
-| `--output-handlers`         | `['stdout']`| A space-separated list of built-in handlers to use.                               |
+| `--output-handlers`         | `stdout`| A space-separated list of built-in handlers to use. Built in: `stdout`, `file`, `ros2`                              |
 | `--custom-handler`          | `None`     | Path to a Python script with a custom `OutputHandler`.                              |
 | `-l`, `--list-devices`      | `False`    | List available audio input devices and exit.                                        |
+| `--log-level`               | `info`     | Set the logging level. Use warning or lower to supress most of the logging. (`debug`, `info`, `warning`, `error`).                        |
+
+### Handler-Specific Arguments
+These arguments are only used when the corresponding handler is enabled via `--output-handlers`.
+
+#### `file` handler
+| Argument | Default | Description |
+|---|---|---|
+| `--file-name` | `transcriptions.txt` | The name of the file to save transcriptions to. |
+| `--file-no-timestamp` | `False` | If set, timestamps will not be added to the output file. |
+
+#### `http_post` handler
+| Argument | Default | Description |
+|---|---|---|
+| `--http-post-url` | (Required) | The URL to which the transcription text will be POSTed. |
+| `--http-post-format` | `json` | The format of the POST request body (`json` or `raw`). |
+| `--http-post-header` | `None` | A JSON string of key/value pairs for request headers (e.g., `'{"Authorization": "Bearer YOUR_TOKEN"}'`). |

@@ -5,9 +5,6 @@ import logging
 from .core import Transcriber
 
 def main():
-    logging.basicConfig(
-        level=logging.INFO, 
-        format='%(asctime)s %(levelname)s %(message)s')
 
     parser = argparse.ArgumentParser(
         description='Real-time audio transcription using Whisper. https://github.com/bob-ros2/vox')
@@ -57,7 +54,17 @@ def main():
     parser.add_argument('-l', '--list-devices', action='store_true',
         help='List available audio input devices and exit.')
 
+    parser.add_argument('--log-level', type=str, default='info',
+        choices=['debug', 'info', 'warning', 'error', 'critical'],
+        help='Set the Python logging level.')
+
     args, handler_args = parser.parse_known_args()
+
+    # --- Logging Configuration ---
+    logging.basicConfig(
+        level=getattr(logging, args.log_level.upper()),
+        format='%(asctime)s %(levelname)s %(message)s'
+    )
 
     # --- List Devices and Exit ---
     if args.list_devices:
