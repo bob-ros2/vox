@@ -12,7 +12,6 @@ dependencies = [
     "numpy",
     "pyaudio",
     "openai-whisper",
-    "torch",
     "requests"
 ]
 
