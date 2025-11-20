@@ -306,3 +306,9 @@ These arguments are only used when the corresponding handler is enabled via `--o
 | `--http-post-url` | (Required) | The URL to which the transcription text will be POSTed. |
 | `--http-post-format` | `json` | The format of the POST request body (`json` or `raw`). |
 | `--http-post-header` | `None` | A JSON string of key/value pairs for request headers (e.g., `'{"Authorization": "Bearer YOUR_TOKEN"}'`). |
+
+#### `ros2` handler
+For ROS (Robot Operating System) users.
+| Argument | Default | Description |
+|---|---|---|
+| `--ros2-topic` | `transcription` | The ROS2 topic to publish transcriptions to. |
