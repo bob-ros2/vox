@@ -262,6 +262,15 @@ This is the most powerful feature for custom integrations.
     ```
 
 ---
+## Troubleshooting
+
+### Audio Quality Issues (Slow/Fast Audio)
+If you experience poor transcription quality or the audio sounds slowed down or sped up, it is likely due to a sample rate mismatch.
+- **Symptom**: Transcription is gibberish or non-existent, and if you listen to the raw audio, it sounds pitch-shifted.
+- **Cause**: The Whisper model expects audio at 16000 Hz. If your input device or the application is configured for a different rate (e.g., 44100 Hz or 48000 Hz) without proper resampling, the audio data will be misinterpreted.
+- **Solution**: Ensure the `--rate` argument matches what Whisper expects (default is 16000 Hz). If you are using a custom setup or specific hardware that requires a different rate, you may need to force the rate using `--rate 16000`.
+
+---
 ## CLI Arguments Reference Table
 | Argument                    | Default    | Description                                                                         |
 | --------------------------- | ---------- | ----------------------------------------------------------------------------------- |

@@ -58,6 +58,9 @@ def main():
         choices=['debug', 'info', 'warning', 'error', 'critical'],
         help='Set the Python logging level.')
 
+    parser.add_argument('--non-interactive', action='store_true',
+        help='Disable interactive features like the ENTER toggle.')
+
     args, handler_args = parser.parse_known_args()
 
     # --- Logging Configuration ---
