@@ -27,7 +27,15 @@ class Transcriber:
                 - warmup (int): Number of consecutive loud chunks to start recording (e.g., 2).
                 - channels (int): Number of audio channels (e.g., 1).
                 - rate (int): Audio sample rate in Hz (e.g., 16000).
+                - rate (int): Audio sample rate in Hz (e.g., 16000).
                 - rms (bool): If True, prints real-time audio volume.
+                - initial_prompt (str): Optional context.
+                - temperature (float): Sampling temperature.
+                - beam_size (int): Beam size.
+                - patience (float): Beam search patience.
+                - length_penalty (float): Length penalty.
+                - no_condition_on_previous_text (bool): If True, disables conditioning.
+                - no_fp16 (bool): If True, forces FP32.
         """
         self.config = config
         self.on_transcription = on_transcription_cb
@@ -91,7 +99,15 @@ class Transcriber:
                 # Transcribe with the specified language, if provided
                 result = self.model.transcribe(
                     audio_data,
-                    language=self.config.get('lang', None))
+                    language=self.config.get('lang', None),
+                    initial_prompt=self.config.get('initial_prompt', None),
+                    temperature=self.config.get('temperature', 0.0),
+                    beam_size=self.config.get('beam_size', None),
+                    patience=self.config.get('patience', None),
+                    length_penalty=self.config.get('length_penalty', None),
+                    condition_on_previous_text=not self.config.get('no_condition_on_previous_text', False),
+                    fp16=not self.config.get('no_fp16', False)
+                )
 
                 logging.info(f"Transcription: {result['text']}")
 

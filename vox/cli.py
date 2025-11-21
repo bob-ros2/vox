@@ -61,6 +61,28 @@ def main():
     parser.add_argument('--non-interactive', action='store_true',
         help='Disable interactive features like the ENTER toggle.')
 
+    # --- Advanced Whisper Parameters ---
+    parser.add_argument('--initial-prompt', type=str, default=None,
+        help='Optional text to provide context or specify output style.')
+
+    parser.add_argument('--temperature', type=float, default=0.0,
+        help='Sampling temperature. 0.0 is deterministic. Higher values (up to 1.0) are more random.')
+
+    parser.add_argument('--beam-size', type=int, default=None,
+        help='Number of beams in beam search. None uses Whisper default.')
+
+    parser.add_argument('--patience', type=float, default=None,
+        help='Beam search patience factor.')
+
+    parser.add_argument('--length-penalty', type=float, default=None,
+        help='Beam search length penalty.')
+
+    parser.add_argument('--no-condition-on-previous-text', action='store_true',
+        help='Disable conditioning on previous text (prevents loops).')
+
+    parser.add_argument('--no-fp16', action='store_true',
+        help='Disable FP16 computation (force FP32).')
+
     args, handler_args = parser.parse_known_args()
 
     # --- Logging Configuration ---
