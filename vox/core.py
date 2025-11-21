@@ -19,6 +19,7 @@ class Transcriber:
                 - model (str): Name of the Whisper model (e.g., 'base', 'small', 'medium').
                 - model_dir (str, optional): Directory to store/load Whisper models from.
                 - lang (str, optional): Language for transcription (e.g., 'en', 'de'). None for auto-detection.
+                - whisper_device (str, optional): Device to use for Whisper inference (e.g., 'cpu', 'cuda').
                 - device (int, optional): Index of the audio input device. None for default.
                 - threshold (int): Time in milliseconds a pause must last to end the recording (e.g., 1000).
                 - silence_threshold (int): RMS audio level below which is considered silence (e.g., 100).
@@ -46,7 +47,8 @@ class Transcriber:
         logging.info(f"Loading Whisper model: {MODEL}...")
 
         self.model = whisper.load_model(MODEL, 
-            download_root=self.config.get('model_dir', None))
+            download_root=self.config.get('model_dir', None),
+            device=self.config.get('whisper_device', None))
 
         self.p = pyaudio.PyAudio()
         self.stream = self.p.open(
@@ -207,7 +209,7 @@ class Transcriber:
 
                 else:
                     # Wait until speech begins
-                    if rms > self.config.get('silence_threshold', 15) * 2: # pseudo hysteresis
+                    if rms > self.config.get('silence_threshold', 20) * 2: # pseudo hysteresis
                         warmup_counter += 1
                     else:
                         warmup_counter = 0 # Reset if there is a dip in volume

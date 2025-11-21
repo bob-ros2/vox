@@ -21,10 +21,13 @@ def main():
     parser.add_argument('--model-dir', type=str, default=None,
         help='Directory to store/load Whisper models from.')
 
+    parser.add_argument('--whisper-device', type=str, default=None,
+        help='Device to use for Whisper inference (e.g., "cpu", "cuda", "cuda:0"). Default is auto-detected.')
+
     parser.add_argument('-c', '--chunk-size', type=int, default=1024,
         help='Number of samples per audio chunk (default: 1024).')
 
-    parser.add_argument('-s', '--silence-threshold', type=int, default=15,
+    parser.add_argument('-s', '--silence-threshold', type=int, default=20,
         help='RMS threshold below which an audio chunk is considered silent (default: 15).')
 
     parser.add_argument('-g', '--lang', type=str, default=None,

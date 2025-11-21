@@ -1,6 +1,6 @@
 [project]
-name = "vox-scribe"
-version = "1.0.0"
+name = "vox-real"
+version = "0.1.12"
 authors = [
   { name="Bob Ros", email="bobmeuchelm@gmail.com" },
 ]
@@ -9,9 +9,8 @@ description = "A real-time audio transcription tool/lib using Whisper."
 readme = "readme_pypi.md"
 requires-python = ">=3.8"
 dependencies = [
-    "numpy",
-    "pyaudio",
-    "openai-whisper",
+    "pyaudio>=0.2.11",
+    "openai-whisper>=20250625",
     "requests"
 ]
 

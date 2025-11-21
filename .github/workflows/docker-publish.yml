@@ -29,8 +29,8 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t ghcr.io/${{ github.repository }}/vox-scribe:latest .
+          docker build -t ghcr.io/${{ github.repository }}/vox-real:latest .
 
       - name: Push Docker image
         run: |
-          docker push ghcr.io/${{ github.repository }}/vox-scribe:latest
+          docker push ghcr.io/${{ github.repository }}/vox-real:latest
