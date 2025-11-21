@@ -1,4 +1,4 @@
-# Vox: Real-time Whisper Transcription Tool & Library
+# Package [VOX](https://github.com/bob-ros2/vox) Real-time Transcription
 
 Vox is a powerful, real-time audio transcription tool and Python library that uses OpenAI's Whisper model. It continuously listens to a microphone, detects speech, transcribes it upon pauses, and forwards the resulting text to one or more configurable destinations using a highly extensible, pluggable output system.
 
@@ -312,3 +312,32 @@ For ROS (Robot Operating System) users.
 | Argument | Default | Description |
 |---|---|---|
 | `--ros2-topic` | `transcription` | The ROS2 topic to publish transcriptions to. |
+
+## Robust Configuration Examples
+
+Here are some examples of how to configure `vox` for different scenarios, building on the basic command:
+`python -m vox.cli --model-dir ./models --model medium --lang de --rms --output-handlers stdout ros2 --ros2-topic /you/llm_prompt`
+
+### 1. Reducing Hallucinations (Repetitions)
+If the model gets stuck repeating the same phrase or hallucinating silence, try increasing the temperature slightly and disabling conditioning on previous text.
+```bash
+python -m vox.cli ... --temperature 0.2 --no-condition-on-previous-text
+```
+
+### 2. Improving Context and Style
+Use `--initial-prompt` to tell the model about the context (e.g., technical terms, specific spelling) or the desired style.
+```bash
+python -m vox.cli ... --initial-prompt "Dies ist ein Transkript über Robotik und ROS2."
+```
+
+### 3. Maximizing Accuracy (Slower)
+Increase the `beam-size` to explore more decoding paths. This will increase latency but may improve accuracy for complex sentences.
+```bash
+python -m vox.cli ... --beam-size 10
+```
+
+### 4. Low-Resource / Compatibility Mode
+If you encounter errors related to FP16 on older hardware, force FP32.
+```bash
+python -m vox.cli ... --no-fp16
+```
